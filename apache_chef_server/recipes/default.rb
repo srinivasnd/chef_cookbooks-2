@@ -23,7 +23,7 @@
 
 template "#{node['apache']['dir']}/sites-available/chef_server.conf" do
   owner "root"
-  group node[:apache][:root_group]
+  group node['apache']['root_group']
   mode 0644
   notifies :restart, resources(:service => "apache2")
 end
