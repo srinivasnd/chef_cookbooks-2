@@ -1,0 +1,35 @@
+<VirtualHost *:443>
+  ServerName <%= node['fqdn'] %>
+  DocumentRoot <%= node['apache_chef_server']['document_root'] %>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/chef_server-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/chef_server-access.log combined
+   
+  SSLEngine On
+  SSLCertificateFile <%= node['apache_chef_server']['ssl_cert'] %>
+  SSLCertificateKeyFile <%= node['apache_chef_server']['ssl_key'] %>
+
+  <Location />
+   SSLRequireSSL
+  </Location>
+
+  ProxyRequests Off
+  <Proxy *>
+   Order deny,allow
+   Allow from all
+  </Proxy>
+
+  RequestHeader set X_FORWARDED_PROTO 'https'
+
+  RewriteEngine On
+  RewriteLog <%= node['apache']['log_dir'] %>/chef_server-rewrite.log
+  RewriteLogLevel 0
+
+  # API requests have this header
+  RewriteCond %{HTTP:X-Ops-Timestamp} .
+  RewriteRule ^/(.*) http://localhost:4000/$1 [P,L]
+  # Web requests do not
+  RewriteRule ^/(.*) http://localhost:4040/$1 [P,L]
+
+</VirtualHost>
