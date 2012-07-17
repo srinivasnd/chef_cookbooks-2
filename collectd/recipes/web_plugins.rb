@@ -56,5 +56,5 @@ end
 
 collectd_plugin "write_graphite" do
 	action  [:create]
-	options("Carbon"=>{:Host=>"#{node['collectd']['graphite_ip']", :Port=>"2003", :Prefix=>"collectd/", :StoreRates=>true, :AlwaysAppendDS=>false, :EscapeCharacter=>"_"})
+	options("Carbon"=>{:Host=>"#{node['collectd']['graphite_ip']}", :Port=>"2003", :Prefix=>"collectd/", :StoreRates=>true, :AlwaysAppendDS=>false, :EscapeCharacter=>"_"})
 end
