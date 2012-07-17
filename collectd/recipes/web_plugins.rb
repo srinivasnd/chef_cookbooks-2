@@ -28,7 +28,7 @@ end
 
 collectd_plugin "disk" do
   action  [:create]
-	options("Disk"=>["/^[hs]d[a-f][0-9]?$/", "xvde1"], :IgnoreSelected=>false)
+	options(:Disk=>["/^[hs]d[a-f][0-9]?$/", "xvde1"], :IgnoreSelected=>false)
 end
 
 collectd_plugin "processes" do
@@ -46,7 +46,7 @@ end
 
 collectd_plugin "tcpconns" do
   action  [:create]
-	options(:ListeningPorts=>false, "LocalPort"=>["80", "8080", "22"])
+	options(:ListeningPorts=>false, :LocalPort=>["80", "8080", "22"])
 end
 
 collectd_plugin "vmem" do
