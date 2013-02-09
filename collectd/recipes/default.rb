@@ -22,27 +22,8 @@
   end
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{node['collectd']['full_name']}" do
-  source node['collectd']['collectd_uri']
-  action :create_if_missing
-end
-
-execute "Untar collectd" do
-  command "tar jxf #{node['collectd']['full_name']}"
-  creates "#{Chef::Config[:file_cache_path]}/#{node['collectd']['version']}"
-  cwd Chef::Config[:file_cache_path]
-end
-
-execute "Configure carbond" do
-  command "./configure"
-  creates "#{Chef::Config[:file_cache_path]}/#{node['collectd']['version']}/config.log"
-  cwd "#{Chef::Config[:file_cache_path]}/#{node['collectd']['version']}"
-end
-
-execute "Install collectd" do
-  command "make all install"
-  creates "/opt/collectd"
-  cwd "#{Chef::Config[:file_cache_path]}/#{node['collectd']['version']}"
+package "collectd" do
+  action :install
 end
 
 template "/etc/init.d/collectd" do
